@@ -1,0 +1,69 @@
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import morgan from "morgan";
+import "express-async-errors";
+
+// Import routes
+// import authRoutes from "./routes/authRoutes.js";
+// import eventRoutes from "./routes/eventRoutes.js";
+// import bookingRoutes from "./routes/bookingRoutes.js";
+
+// Middlewares
+import { errorHandler } from "./middlewares/error.js";
+import { authenticate } from "./middlewares/auth.js";
+
+const app = express();
+
+// ======================================
+//         Middleware Configuration
+// ======================================
+
+// 1. CORS Configuration
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
+
+// 2. Request Logger (Development only)
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
+// 3. Body Parsers
+app.use(express.json()); // For JSON bodies
+app.use(express.urlencoded({ extended: true })); // For URL-encoded bodies
+
+// 4. Cookie Parser (for JWT tokens)
+app.use(cookieParser());
+
+// ======================================
+//              Routes
+// ======================================
+
+// Authentication Routes
+// app.use("/api/v1/auth", authRoutes);
+
+// Event Routes (Protected + Admin)
+// app.use(
+//   "/api/v1/events",
+//   authenticate, // JWT verification
+//   eventRoutes
+// );
+
+// Booking Routes (Protected)
+// app.use(
+//   "/api/v1/bookings",
+//   authenticate, // JWT verification
+//   bookingRoutes
+// );
+
+// ======================================
+//          Error Handling
+// ======================================
+app.use(errorHandler); // Must be last middleware
+
+export default app;

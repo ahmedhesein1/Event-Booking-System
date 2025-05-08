@@ -1,7 +1,7 @@
 import Event from "../models/Event.js";
 import ApiError from "../utils/ApiError.js";
 
-export const gotEvents = async (req, res, next) => {
+export const getEvents = async (req, res, next) => {
   const events = await Event.find().populate("createdBy", "userName");
   res.status(200).json(events);
   if (!event) next(new ApiError(404, "Events Not Found"));

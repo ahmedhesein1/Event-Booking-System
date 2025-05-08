@@ -5,9 +5,9 @@ import morgan from "morgan";
 import "express-async-errors";
 
 // Import routes
-// import authRoutes from "./routes/authRoutes.js";
-// import eventRoutes from "./routes/eventRoutes.js";
-// import bookingRoutes from "./routes/bookingRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+import eventRoutes from "./routes/eventRoutes.js";
+import bookingRoutes from "./routes/bookingRoutes.js";
 
 // Middlewares
 import { errorHandler } from "./middlewares/error.js";
@@ -45,21 +45,21 @@ app.use(cookieParser());
 // ======================================
 
 // Authentication Routes
-// app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 // Event Routes (Protected + Admin)
-// app.use(
-//   "/api/v1/events",
-//   authenticate, // JWT verification
-//   eventRoutes
-// );
+app.use(
+  "/api/v1/events",
+  authenticate, // JWT verification
+  eventRoutes
+);
 
 // Booking Routes (Protected)
-// app.use(
-//   "/api/v1/bookings",
-//   authenticate, // JWT verification
-//   bookingRoutes
-// );
+app.use(
+  "/api/v1/bookings",
+  authenticate, // JWT verification
+  bookingRoutes
+);
 
 // ======================================
 //          Error Handling

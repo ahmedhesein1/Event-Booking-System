@@ -1,4 +1,5 @@
 import "express-async-errors"; // MUST BE FIRST IMPORT
+import 'dotenv/config'
 import "./config/env.js";
 import express from "express";
 import connectDB from "./config/db.js";

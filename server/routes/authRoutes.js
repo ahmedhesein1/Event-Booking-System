@@ -1,6 +1,6 @@
 import express from "express";
 import *as authController from '../controllers/authController.js'
-import { authenticate } from "../middlewares/auth.js";
+import { authenticate, authorizeAdmin } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -10,6 +10,6 @@ router.post("/login",authController.login);
 
 // Protected route (requires authentication)
 router.get("/me", authenticate,authController.getMe);
-router.patch("/admin/:id", authenticate,authController.makeAdmin);
+router.patch("/admin/:id",authorizeAdmin, authenticate,authController.makeAdmin);
 
 export default router;

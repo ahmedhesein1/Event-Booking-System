@@ -28,7 +28,10 @@ const bookingSchema = new mongoose.Schema(
 
 bookingSchema.index(
   { cancelledAt: 1 },
-  { expireAfterSeconds: 30 * 24 * 60 * 60 } // 30 days in seconds
+  {
+    expireAfterSeconds: 30 * 24 * 60 * 60 * 1000, // 30 days in seconds
+    partialFilterExpression: { status: "cancelled" },
+  }
 );
 
 export default mongoose.model("Booking", bookingSchema);

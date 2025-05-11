@@ -35,3 +35,17 @@ export const getMe = async (req, res) => {
   const user = await User.findById(req.user._id).select("-password");
   res.json(user);
 };
+export const makeAdmin = async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.params.id);
+  if (user.role === 'admin') return next(new ApiError(500, "this person is already admin"));
+  const admin = await User.findByIdAndUpdate(
+    req.params.id,
+    { role: "admin" },
+    { new: true }
+  ).select("-password");
+
+  res.json({
+    success: true,
+    data: admin,
+  });
+};

@@ -21,8 +21,14 @@ const bookingSchema = new mongoose.Schema(
       enum: ["confirmed", "cancelled"],
       default: "confirmed",
     },
+    cancelledAt: Date,
   },
   { timestamps: true }
+);
+
+bookingSchema.index(
+  { cancelledAt: 1 },
+  { expireAfterSeconds: 30 * 24 * 60 * 60 } // 30 days in seconds
 );
 
 export default mongoose.model("Booking", bookingSchema);

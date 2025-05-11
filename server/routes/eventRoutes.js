@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/", eventController.getEvents);
 
 // Admin-only routes
-router.use(authenticate, authorizeAdmin); // Applies to all following routes
+router.use(authenticate, authorizeAdmin);
 router.post("/", eventController.createEvent);
 router.patch("/:id", eventController.updateEvent);
 router.delete("/:id",eventController.deleteEvent);

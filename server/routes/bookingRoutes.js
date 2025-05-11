@@ -9,6 +9,6 @@ router.use(authenticate);
 
 router.get("/", bookingController.getBookings);
 router.post("/:eventId", bookingController.createBooking); // eventId in URL params
-router.delete("/:id", bookingController.deleteBooking); // bookingId in URL params
+router.delete("/:id", bookingController.cancelBooking); // bookingId in URL params
 
 export default router;

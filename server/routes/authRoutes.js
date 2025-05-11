@@ -10,5 +10,6 @@ router.post("/login",authController.login);
 
 // Protected route (requires authentication)
 router.get("/me", authenticate,authController.getMe);
+router.patch("/admin/:id", authenticate,authController.makeAdmin);
 
 export default router;

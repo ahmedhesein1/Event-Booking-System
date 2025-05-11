@@ -11,6 +11,14 @@ export const getBookings = async (req, res, next) => {
   res.json(bookings);
 };
 
+export const getBookingsHistory = async (req, res, next) => {
+  const bookings = await Booking.find({
+    user: req.user._id,
+  }).populate("event", "name date venue");
+  if (!bookings) next(new ApiError(500, "Failed to fetch bookings"));
+  res.json(bookings);
+};
+
 export const createBooking = async (req, res, next) => {
   const booking = await Booking.findOne({
     user: req.user._id,

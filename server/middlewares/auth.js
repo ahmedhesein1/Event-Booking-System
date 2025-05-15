@@ -8,8 +8,9 @@ export const authenticate = async (req, res, next) => {
   if (!token)return next(new ApiError(401, "Authentication failed!"));
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  req.user = await User.findById(decoded.userId);
-  if (!decoded) return next(new ApiError(401, "Invalid or expired token!"));
+  const user = await User.findById(decoded.id);
+  if (!user) return next(new ApiError(401, "Invalid or expired token!"));
+  req.user = user;
   next();
 };
 export const authorizeAdmin = (req, res, next) => {

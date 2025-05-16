@@ -24,6 +24,11 @@ const eventSchema = new mongoose.Schema(
       required: [true, "Price is required"],
       min: [0, "Price cannot be negative"],
     },
+    availableSeats: {
+      type: Number,
+      required: [true, "Available seats are required"],
+      min: [0, "Available seats cannot be negative"],
+    },
     category: {
       type: String,
       required: [true, "Category is required"],

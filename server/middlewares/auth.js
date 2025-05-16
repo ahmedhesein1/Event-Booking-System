@@ -5,7 +5,7 @@ import User from "../models/User.js";
 
 export const authenticate = async (req, res, next) => {
   const token = req.cookies.token;
-  if (!token)return next(new ApiError(401, "Authentication failed!"));
+  if (!token) return next(new ApiError(401, "Authentication failed!"));
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   const user = await User.findById(decoded.id);

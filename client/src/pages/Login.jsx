@@ -1,28 +1,27 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 
-const Register = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const { register } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Registering with:", { email, password }); // Add this line
     try {
-      await register(email, password);
-      navigate("/login");
+      await login(email, password);
+      navigate("/dashboard");
     } catch (err) {
-      setError(err.message || "Registration failed");
+      setError(err.message || "Login failed");
     }
   };
 
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-primary mb-4">Register</h1>
+      <h1 className="text-2xl font-bold text-primary mb-4">Login</h1>
       {error && (
         <div className="bg-red-100 text-danger p-3 rounded mb-4">{error}</div>
       )}
@@ -57,12 +56,12 @@ const Register = () => {
           type="submit"
           className="w-full bg-primary text-white p-2 rounded hover:bg-blue-700"
         >
-          Register
+          Login
         </button>
         <p className="mt-2 text-center">
-          Already have an account?{" "}
-          <Link to="/login" className="text-primary hover:underline">
-            Login
+          Don't have an account?{" "}
+          <Link to="/register" className="text-primary hover:underline">
+            Register
           </Link>
         </p>
       </form>
@@ -70,4 +69,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

@@ -1,12 +1,9 @@
 import React from "react";
-import "./Footer.css";
 
 const Footer = () => {
   return (
-    <footer className="footer">
-      <div className="container">
-        <p>© {new Date().getFullYear()} EventMaster. All rights reserved.</p>
-      </div>
+    <footer className="bg-secondary text-white text-center p-4 mt-auto">
+      <p>© 2025 Event Booking System. All rights reserved.</p>
     </footer>
   );
 };

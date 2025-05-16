@@ -1,20 +1,14 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { createContext, useState, useEffect } from "react";
 import api from "../utils/api";
 
-const AuthContext = createContext();
-
-export const useAuth = () => useContext(AuthContext);
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
-  // Check if user is already logged in on page load
   useEffect(() => {
-    const checkLoggedIn = async () => {
+    const checkAuth = async () => {
       try {
         const { data } = await api.get("/api/v1/auth/me");
         setUser(data);
@@ -24,76 +18,30 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
       }
     };
-
-    checkLoggedIn();
+    checkAuth();
   }, []);
 
-  // Register user
-  const register = async (userData) => {
-    setLoading(true);
-    try {
-      const { data } = await api.post("/api/v1/auth/register", userData);
-      setUser(data);
-      navigate("/dashboard");
-      return { success: true };
-    } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
-      return {
-        success: false,
-        message: err.response?.data?.message || "Registration failed",
-      };
-    } finally {
-      setLoading(false);
-    }
+  const login = async (email, password) => {
+    const { data } = await api.post("/api/v1/auth/login", { email, password });
+    setUser(data);
   };
 
-  // Login user
-  const login = async (credentials) => {
-    setLoading(true);
-    try {
-      const { data } = await api.post("/api/v1/auth/login", credentials);
-      setUser(data);
-      navigate("/dashboard");
-      return { success: true };
-    } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
-      return {
-        success: false,
-        message: err.response?.data?.message || "Login failed",
-      };
-    } finally {
-      setLoading(false);
-    }
+  const register = async (email, userName, password) => {
+    const { data } = await api.post("/api/v1/auth/register", {
+      userName,
+      email,
+      password,
+    });
+    setUser(data);
   };
 
-  // Logout user
   const logout = async () => {
-    try {
-      await api.post("/api/v1/auth/logout");
-      setUser(null);
-      navigate("/login");
-    } catch (err) {
-      setError(err.response?.data?.message || "Logout failed");
-    }
+    await api.post("/api/v1/auth/logout");
+    setUser(null);
   };
-
-  // Clear error
-  const clearError = () => setError(null);
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        error,
-        register,
-        login,
-        logout,
-        clearError,
-        isAuthenticated: !!user,
-        isAdmin: user?.role === "admin",
-      }}
-    >
+    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

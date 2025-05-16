@@ -3,8 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import "express-async-errors";
-
-
+import path from "path";
 // Import routes
 import authRoutes from "./routes/authRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
@@ -39,7 +38,7 @@ if (process.env.NODE_ENV === "development") {
 // 3. Body Parsers
 app.use(express.json()); // For JSON bodies
 app.use(express.urlencoded({ extended: true })); // For URL-encoded bodies
-
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads"))); // Serve uploads directory
 
 // ======================================
 //              Routes

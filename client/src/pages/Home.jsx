@@ -35,7 +35,6 @@ const Home = () => {
             bookingsResponse.data.map((booking) => booking.event._id.toString())
           );
           setBookedEvents(bookedEventIds);
-          console.log("Booked Events:", bookedEventIds); // Debug log
         } else {
           setBookedEvents(new Set()); // Clear booked events if not logged in
         }

@@ -36,7 +36,6 @@ const eventSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      required: [true, "Image URL is required"],
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

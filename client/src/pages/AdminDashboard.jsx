@@ -13,6 +13,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [deleteUserLoading, setDeleteUserLoading] = useState(false);
   const [deleteEventLoading, setDeleteEventLoading] = useState(false);
+  const [makeAdminLoading, setMakeAdminLoading] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -80,6 +81,24 @@ const AdminDashboard = () => {
     }
   };
 
+  const makeAdmin = async (userId) => {
+    if (window.confirm("Are you sure you want to make this user an admin?")) {
+      setMakeAdminLoading(userId);
+      try {
+        const response = await api.put(
+          `/api/v1/admin/users/make-admin/${userId}`
+        );
+        setUsers((prev) =>
+          prev.map((u) => (u._id === userId ? { ...u, role: "admin" } : u))
+        );
+      } catch (err) {
+        setError(err.response?.data?.message || "Failed to make user an admin");
+      } finally {
+        setMakeAdminLoading(null);
+      }
+    }
+  };
+
   if (authLoading || loading) return <Loader />;
   if (!user || user.role !== "admin")
     return <p className="text-center text-gray">Access denied. Admins only.</p>;
@@ -92,15 +111,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="py-8 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-primary">Admin Dashboard</h1>
-        <Link
-          to="/admin/events/create"
-          className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Create New Event
-        </Link>
-      </div>
+      <h1 className="text-2xl font-bold text-primary mb-6">Admin Dashboard</h1>
       {error && (
         <div className="bg-red-100 text-danger p-3 rounded mb-4">{error}</div>
       )}
@@ -121,7 +132,7 @@ const AdminDashboard = () => {
               >
                 <div>
                   <h3 className="text-xl font-medium text-primary">
-                    {u.userName} ({u.email})
+                    {u.userName} ({u.email}) - Role: {u.role || "user"}
                   </h3>
                   <p className="text-gray">Bookings: {u.bookings.length}</p>
                   {u.bookings.length > 0 ? (
@@ -137,13 +148,30 @@ const AdminDashboard = () => {
                     <p className="text-gray">This user has no bookings yet.</p>
                   )}
                 </div>
-                <button
-                  className="bg-danger text-white px-3 py-1 rounded hover:bg-red-700 disabled:bg-gray-400"
-                  onClick={() => handleDeleteUser(u._id)}
-                  disabled={deleteUserLoading || u._id === user._id}
-                >
-                  {deleteUserLoading ? "Deleting..." : "Delete"}
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    className="bg-danger text-white px-3 py-1 rounded hover:bg-red-700 disabled:bg-gray-400"
+                    onClick={() => handleDeleteUser(u._id)}
+                    disabled={deleteUserLoading || u._id === user._id}
+                  >
+                    {deleteUserLoading ? "Deleting..." : "Delete"}
+                  </button>
+                  {u._id !== user._id && (
+                    <button
+                      className="bg-primary text-white px-3 py-1 rounded hover:bg-blue-700 disabled:bg-gray-400"
+                      onClick={() => makeAdmin(u._id)}
+                      disabled={
+                        makeAdminLoading === u._id || u.role === "admin"
+                      }
+                    >
+                      {makeAdminLoading === u._id
+                        ? "Promoting..."
+                        : u.role === "admin"
+                        ? "Already Admin"
+                        : "Make Admin"}
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>

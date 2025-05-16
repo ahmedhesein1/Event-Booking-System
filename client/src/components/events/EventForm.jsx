@@ -114,19 +114,32 @@ const EventForm = ({ event, onChange, onSubmit, loading, error }) => {
           </select>
         </div>
         <div>
-          <label htmlFor="image" className="block text-gray mb-1">
-            Image URL
+          <label htmlFor="imageFile" className="block text-gray mb-1">
+            Upload Image
           </label>
           <input
-            type="url"
-            id="image"
-            name="image"
-            value={event.image}
+            type="file"
+            id="imageFile"
+            name="imageFile"
             onChange={onChange}
+            accept="image/jpeg,image/jpg,image/png"
             className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
-            required
           />
         </div>
+      </div>
+      <div className="mb-4">
+        <label htmlFor="imageUrl" className="block text-gray mb-1">
+          Or Enter Image URL
+        </label>
+        <input
+          type="url"
+          id="imageUrl"
+          name="imageUrl"
+          value={event.imageUrl || ""}
+          onChange={onChange}
+          className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+          placeholder="https://example.com/image.jpg"
+        />
       </div>
       {error && (
         <div className="bg-red-100 text-danger p-3 rounded mb-4">{error}</div>

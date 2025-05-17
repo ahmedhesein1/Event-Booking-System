@@ -61,3 +61,38 @@
 - **Backend**: Node.js, Express, MongoDB
 - **Authentication**: JWT
 - **State Management**: React Context API
+
+## API Documentation
+
+### Authentication Routes
+| Endpoint | Method | Description | Access |
+|----------|--------|-------------|--------|
+| `/api/auth/register` | POST | Register new user | Public |
+| `/api/auth/login` | POST | User login | Public |
+| `/api/auth/logout` | POST | Logout user | Public |
+| `/api/auth/me` | GET | Get current user data | Authenticated |
+
+### Event Routes
+| Endpoint | Method | Description | Access |
+|----------|--------|-------------|--------|
+| `/api/events` | GET | Get all events | Authenticated |
+| `/api/events/:id` | GET | Get single event by ID | Authenticated |
+| `/api/events` | POST | Create new event (with image upload) | Admin |
+| `/api/events/:id` | PATCH | Update event | Admin |
+| `/api/events/:id` | DELETE | Delete event | Admin |
+
+### Booking Routes
+| Endpoint | Method | Description | Access |
+|----------|--------|-------------|--------|
+| `/api/bookings` | GET | Get user's bookings | Authenticated |
+| `/api/bookings/history` | GET | Get booking history | Authenticated |
+| `/api/bookings/:eventId` | POST | Create new booking | Authenticated |
+| `/api/bookings/:id` | PATCH | Cancel booking | Authenticated |
+
+### Admin Routes
+| Endpoint | Method | Description | Access |
+|----------|--------|-------------|--------|
+| `/api/admin/users-with-bookings` | GET | Get all users with their bookings | Admin |
+| `/api/admin/events-with-bookings` | GET | Get events with booking counts | Admin |
+| `/api/admin/users/make-admin/:id` | PUT | Promote user to admin | Admin |
+| `/api/admin/users/:id` | DELETE | Delete user | Admin |
